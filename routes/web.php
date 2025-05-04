@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\UsersController;
 use App\Models\ProductList;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +29,8 @@ Route::middleware('auth')->group(function () {
         return view("layouts.acceuil",compact("products"));
     })->name("last-products");
     Route::match(['get', 'post'], '/products/search', [ProductListController::class, 'search'])->name('products.search');
+    Route::resource("users",UsersController::class);
+
 
 });
 

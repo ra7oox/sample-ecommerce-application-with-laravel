@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\User;
+
+class UsersPolicy
+{
+    public function show(User $user){
+        return $user->account_type=="admin";
+    
+       }
+       public function create(User $user){
+        return $user->account_type=="admin";
+    
+       }
+       public function update(User $user){
+        return $user->account_type=="admin";
+    
+       }
+       public function delete(User $user){
+        return $user->account_type=="admin";
+    
+       }
+}

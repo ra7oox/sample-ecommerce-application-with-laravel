@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Policies\ProductsPolicy;
+use App\Policies\UsersPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("create-product",[ProductsPolicy::class,'create']);
         Gate::define("update-product",[ProductsPolicy::class,'update']);
         Gate::define("delete-product",[ProductsPolicy::class,'delete']);
+
+        Gate::define("show-user",[UsersPolicy::class,'show']);
+        Gate::define("create-user",[UsersPolicy::class,'create']);
+        Gate::define("update-user",[UsersPolicy::class,'update']);
+        Gate::define("delete-user",[UsersPolicy::class,'delete']);
+
+
 
     }
 }

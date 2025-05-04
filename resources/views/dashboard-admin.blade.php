@@ -32,7 +32,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Utilisateurs</h5>
                         <p class="card-text">Gérez les comptes utilisateurs (si applicable).</p>
-                        <a href="#" class="btn btn-outline-secondary">Voir les utilisateurs</a>
+                        <a href="{{route("users.index")}}" class="btn btn-outline-secondary">Voir les utilisateurs</a>
                     </div>
                 </div>
             </div>
