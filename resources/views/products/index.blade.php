@@ -11,7 +11,14 @@
     @endif
 
     <div class="d-flex justify-content-between align-items-center mb-3">
+        @if (Auth::user()->account_type=="seller")
+        <h4 class="mb-0">Liste de mes produits</h4>
+
+            
+        @else
         <h4 class="mb-0">Liste des produits</h4>
+            
+        @endif
         @can('create-product')
             
        

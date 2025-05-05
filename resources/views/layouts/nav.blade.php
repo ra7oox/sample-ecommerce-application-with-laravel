@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold text-uppercase" href="#">MonSite</a>
+        <a class="navbar-brand fw-bold text-uppercase" href="{{route("dashboard")}}">Shopily</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch"
             aria-controls="navbarSearch" aria-expanded="false" aria-label="Basculer la navigation">

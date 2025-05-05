@@ -15,6 +15,8 @@
                     <p class="card-text"><strong>Description :</strong> {{ $product->description }}</p>
                     <p class="card-text"><strong>Quantité :</strong> {{ $product->quantity }}</p>
                     <p class="card-text"><strong>Prix :</strong> {{ number_format($product->price, 2) }} €</p>
+                    <p class="card-text"><strong>seller :</strong> {{ $product->user->name ?? "uknown" }} </p>
+
 
                     <div class="mt-4 d-flex gap-2">
                         @can('update-product')

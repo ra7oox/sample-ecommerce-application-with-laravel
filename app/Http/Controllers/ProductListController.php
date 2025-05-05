@@ -7,6 +7,7 @@ use App\Models\ProductList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class ProductListController extends Controller
 {
@@ -17,9 +18,15 @@ class ProductListController extends Controller
      */
     public function index()
     {
-        $products=ProductList::paginate(2);
-        return view("products.index",compact("products"));
+        if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "client") {
+            $products = ProductList::paginate(2);
+        } else {
+            $products = Auth::user()->products()->paginate(2); // Note le () pour builder
+        }
+    
+        return view("products.index", compact("products"));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -46,14 +53,29 @@ class ProductListController extends Controller
             "price"=>'required',
             
         ]);
-        ProductList::create([
-            "name"=>$request->name,
-            "description"=>$request->description,
-            "quantity"=>$request->quantity,
-            "image"=>$request->file("image")->store("product_images","public"),
-            "price"=>$request->price,
-            "category_id"=>$request->category_id,
-        ]);
+        // Validation (à adapter si besoin)
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'quantity' => 'required|integer|min:0',
+        'image' => 'required|image|mimes:jpg,jpeg,png',
+        'price' => 'required|numeric|min:0',
+        'category_id' => 'required|exists:categories,id',
+    ]);
+
+    // Détermination du vendeur
+    $seller_id = Auth::user()->account_type === 'seller' ? Auth::id() : null;
+
+    // Création du produit
+    ProductList::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'quantity' => $request->quantity,
+        'image' => $request->file('image')->store('product_images', 'public'),
+        'price' => $request->price,
+        'category_id' => $request->category_id,
+        'seller_id' => $seller_id,
+    ]);
         return redirect()->route("products.index")->with("success","product added with success");
     }
 

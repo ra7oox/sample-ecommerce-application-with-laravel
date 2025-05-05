@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-4">
         <h1>Category: {{ $category->category_name }}</h1>
-        <a href="{{ route('products.index') }}" class="btn btn-primary mb-3">Go Back</a>
+        <a href="{{ route('categories.index') }}" class="btn btn-primary mb-3">Go Back</a>
 
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-dark">

@@ -15,6 +15,9 @@ Route::get('/dashboard', function () {
         return view("dashboard-admin");
     }elseif(Auth::user()->account_type=="client"){
         return view("dashboard-client");
+    }else{
+        return view("dashboard-seller");
+
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -25,7 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::resource("products",ProductListController::class);
     Route::resource("categories",CategoryController::class);
     Route::get("/lastproducts",function(){
-        $products=ProductList::latest()->get();
+        if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "client") {
+            $products = ProductList::latest()->get();
+        } else {
+            $products = Auth::user()->products()->latest()->get(); // Note le () pour builder
+        }
         return view("layouts.acceuil",compact("products"));
     })->name("last-products");
     Route::match(['get', 'post'], '/products/search', [ProductListController::class, 'search'])->name('products.search');
