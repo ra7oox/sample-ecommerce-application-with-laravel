@@ -17,12 +17,20 @@
                     <p class="card-text"><strong>Prix :</strong> {{ number_format($product->price, 2) }} €</p>
 
                     <div class="mt-4 d-flex gap-2">
+                        @can('update-product')
+                            
+                       
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
+                        @endcan
+                        @can('delete-product')
+                            
+                        
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Supprimer</button>
                         </form>
+                        @endcan
                         <a href="{{ route('products.index') }}" class="btn btn-secondary">Retour à la liste</a>
                     </div>
                 </div>

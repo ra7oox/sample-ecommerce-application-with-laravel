@@ -10,7 +10,9 @@
                 <tr>
                     <th scope="col">#ID</th>
                     <th scope="col">Name</th>
+                    @can('update-product')
                     <th scope="col">Update Product</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -18,9 +20,13 @@
                     <tr>
                         <td>{{ $product->id }}</td>
                         <td>{{ $product->name }}</td>
+                        @can('update-product')
+                            
+                       
                         <td class="text-center">
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Update</a>
                         </td>
+                        @endcan
                     </tr>
                 @empty
                     <tr>

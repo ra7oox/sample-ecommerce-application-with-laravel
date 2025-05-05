@@ -4,6 +4,8 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-primary">Liste des utilisateurs</h1>
+        <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">Ajouter</a>
+
     </div>
 
     @if (session('success'))
