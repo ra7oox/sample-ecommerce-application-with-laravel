@@ -16,15 +16,16 @@ class AccountUpdated extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $statut;
+    public function __construct($statut)
     {
-        //
+        $this->statut=$statut;
     }
 
     public function build()
     {
-        return $this->subject('Votre compte modifié avec success')
+        return $this->subject('Votre compte'.$this->statut.' crée avec success')
                     ->view('emails.accountUpdated')
-                    ;
+                    ->with(['statut' => $this->statut]);
     }
 }

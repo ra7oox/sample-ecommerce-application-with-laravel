@@ -105,7 +105,7 @@ class UsersController extends Controller
         ]);
     
         // Envoi de l'email avec login/mot de passe
-        Mail::to($validated['email'])->send(new AccountUpdated);
+        Mail::to($validated['email'])->send(new AccountUpdated("modifié"));
     
         return redirect()->route('users.index')->with('success', "Compte client créé avec succès !");
     }
@@ -115,6 +115,12 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->authorize("delete-user");
+        $user=User::findOrFail($id);
+        $user->delete();
+        Mail::to($user->email)->send(new AccountUpdated("supprimé"));
+
+        return redirect()->route('users.index')->with('success', "Compte client Supprimé avec succès !");
+        
     }
 }

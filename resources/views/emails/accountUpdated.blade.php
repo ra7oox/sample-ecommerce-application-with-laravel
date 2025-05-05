@@ -49,7 +49,7 @@
         </div>
         <div class="content">
             <p>Bonjour,</p>
-            <p>Votre compte a été <strong>Modifié avec succès</strong>.</p>
+            <p>Votre compte a été <strong>{{$statut}} avec succès</strong>.</p>
 
 
             <p><strong>⚠️ Veuillez changer votre mot de passe dès votre première connexion.</strong></p>
