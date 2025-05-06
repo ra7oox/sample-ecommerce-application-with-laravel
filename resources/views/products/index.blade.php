@@ -54,12 +54,23 @@
                     </td>
                     <td>{{ number_format($product->price, 2) }} €</td>
                     <td class="d-flex gap-2">
-                        @can('update-product')
+                        @can('update-product',$product)
                             
                        
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Modifier</a>
                         @endcan
                         <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary btn-sm">detail</a>
+                        @can('create-order')
+                        <form action="{{ route('orders.create') }}" method="GET">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Commander</button>
+                        </form>
+                        
+                        
+                            
+                        @endcan
+
                         @can('delete-product')
                             
                         

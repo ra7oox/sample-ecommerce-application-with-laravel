@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\UsersController;
 use App\Models\ProductList;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource("products",ProductListController::class);
     Route::resource("categories",CategoryController::class);
+    Route::resource("orders",OrdersController::class);
+
     Route::get("/lastproducts",function(){
         if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "client") {
             $products = ProductList::latest()->get();
@@ -37,6 +40,9 @@ Route::middleware('auth')->group(function () {
     })->name("last-products");
     Route::match(['get', 'post'], '/products/search', [ProductListController::class, 'search'])->name('products.search');
     Route::resource("users",UsersController::class);
+    Route::patch('/orders/{order}/update-status', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::patch('/orders/{order}/cancel', [OrdersController::class, 'cancel'])->name('orders.cancel');
+
 
 
 });

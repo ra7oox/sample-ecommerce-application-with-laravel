@@ -36,6 +36,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Mes commandes</h5>
+                        <a href="{{route("orders.index")}}" class="btn btn-outline-secondary">Tout les Commandes</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

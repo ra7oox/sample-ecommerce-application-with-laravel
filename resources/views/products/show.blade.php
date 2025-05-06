@@ -19,7 +19,7 @@
 
 
                     <div class="mt-4 d-flex gap-2">
-                        @can('update-product')
+                        @can('update-product',$product)
                             
                        
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
