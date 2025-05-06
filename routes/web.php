@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApprovedAccountController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource("products",ProductListController::class);
     Route::resource("categories",CategoryController::class);
     Route::resource("orders",OrdersController::class);
 
@@ -42,13 +42,16 @@ Route::middleware('auth')->group(function () {
     Route::resource("users",UsersController::class);
     Route::patch('/orders/{order}/update-status', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 Route::patch('/orders/{order}/cancel', [OrdersController::class, 'cancel'])->name('orders.cancel');
+Route::get("/approved/{id}",[ApprovedAccountController::class,"approve"])->name("account.approve");
+Route::get("/decline/{id}",[ApprovedAccountController::class,"decline"])->name("account.decline");
 
 
 
 });
 
 
+Route::resource("products",ProductListController::class);
 
 
-Route::redirect("/","/login");
+Route::redirect("/","/products");
 require __DIR__.'/auth.php';

@@ -51,5 +51,27 @@
             </tbody>
         </table>
     @endif
+    <div class="mt-5">
+        <h2 class="text-primary mb-4">Demandes de validation de compte</h2>
+    
+        @if ($requests->isEmpty())
+            <div class="alert alert-info text-center">Aucune demande en attente.</div>
+        @else
+            <div class="list-group">
+                @foreach ($requests as $request)
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Email :</strong> {{ $request->user_email }}
+                        </div>
+                        <div>
+                            <a href="{{ route('account.approve', $request->id) }}" class="btn btn-sm btn-success me-2">Accepter</a>
+                            <a href="{{ route('account.decline', $request->id) }}" class="btn btn-sm btn-danger">Refuser</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+    
 </div>
 @endsection

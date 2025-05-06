@@ -12,7 +12,9 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">
+            @if(Auth::user())
             {{ Auth::user()->account_type == "seller" ? 'Liste de mes produits' : 'Liste des produits' }}
+            @endif
         </h4>
         @can('create-product')
         <a href="{{ route('products.create') }}" class="btn btn-success">Ajouter un produit</a>

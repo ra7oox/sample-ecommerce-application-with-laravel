@@ -32,7 +32,7 @@
                             <a href="{{ route('categories.show', $product->category->id) }}" class="btn btn-sm btn-outline-primary">
                                 {{ $product->category->category_name }}
                             </a>
-                            @can('update-product')
+                            @can('update-product',$product)
                                 
                             
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-secondary">Éditer</a>

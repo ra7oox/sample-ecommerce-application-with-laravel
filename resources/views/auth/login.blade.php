@@ -1,6 +1,11 @@
 <x-guest-layout>
     <div class="max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <!-- Session Status -->
+        @if (session('success'))
+            <div class="mb-4 text-sm font-medium text-green-700 bg-green-100 border border-green-300 rounded-lg p-4 dark:bg-green-800 dark:text-green-100 dark:border-green-700">
+                {{ session('success') }}
+            </div>
+        @endif
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Connexion à votre compte</h2>

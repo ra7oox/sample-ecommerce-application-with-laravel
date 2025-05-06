@@ -18,14 +18,24 @@ class ProductListController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "client") {
-            $products = ProductList::paginate(2);
+        if (Auth::check()) {
+            $user = Auth::user();
+    
+            if ($user->account_type == "admin") {
+                $products = ProductList::paginate(3);
+            } elseif ($user->account_type == "seller") {
+                $products = $user->products()->paginate(3); // Produits du client
+            } else {
+                $products = ProductList::paginate(2);
+            }
         } else {
-            $products = Auth::user()->products()->paginate(2); // Note le () pour builder
+            // Utilisateur non connecté → on affiche tous les produits
+            $products = ProductList::paginate(3);
         }
     
         return view("products.index", compact("products"));
     }
+    
     
 
     /**

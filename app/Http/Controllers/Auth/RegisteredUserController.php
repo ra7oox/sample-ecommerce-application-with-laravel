@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApprovedAccount;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -34,7 +35,18 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+        if($request->account_type=="seller"){
+            $request->validate([
+                "email" => "required|email|unique:approved_accounts,user_email"
+            ]);
+            
+            ApprovedAccount::create([
+                "user_email"=>$request->email,
+                "approved"=>false,
+            ]);
+        return redirect()->route("login")->with("success","wait for approving your account");
 
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

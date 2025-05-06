@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\AccountMail;
 use App\Mail\AccountUpdated;
+use App\Models\ApprovedAccount;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class UsersController extends Controller
     {
         $this->authorize("show-user");
         $users=User::all();
-        return view("users.index",compact("users"));
+        $requests=ApprovedAccount::where("approved",0)->get();
+        return view("users.index",compact("users","requests"));
     }
 
     /**
