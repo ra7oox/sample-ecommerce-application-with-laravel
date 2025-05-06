@@ -32,7 +32,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Mon profil</h5>
                         <p class="card-text">Consultez et modifiez vos informations personnelles.</p>
-                        <a href="#" class="btn btn-outline-secondary">Profil</a>
+                        <a href="{{route("profile.edit")}}" class="btn btn-outline-secondary">Profil</a>
                     </div>
                 </div>
             </div>

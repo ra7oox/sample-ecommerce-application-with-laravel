@@ -123,4 +123,7 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('success', "Compte client Supprimé avec succès !");
         
     }
+    public function profile(){
+        return view("users.profile");
+    }
 }

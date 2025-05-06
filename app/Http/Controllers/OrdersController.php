@@ -51,17 +51,38 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         $this->authorize("create-order");
+    
         $request->validate([
-            "product_id"=>"required",
-            "client_id"=>"required",
-            "quantity"=>"required",
-            "payment_method"=>"required",
-            "address"=>"required",
+            "product_id" => "required|exists:product_lists,id",
+            "client_id" => "required|exists:users,id",
+            "quantity" => "required|integer|min:1",
+            "payment_method" => "required|string",
+            "address" => "required|string",
         ]);
-        Orders::create($request->all());
-        return redirect()->route("products.index")->with("success","votre commande passé par success");
-
+    
+        $product = ProductList::findOrFail($request->product_id);
+    
+        if ($request->quantity > $product->quantity) {
+            return back()->with("error", "Stock insuffisant pour cette commande.");
+        }
+    
+        Orders::create([
+            'product_id' => $request->product_id,
+            'client_id' => $request->client_id,
+            'quantity' => $request->quantity,
+            'status' => 'pending', // ou "en attente"
+            'payment_method' => $request->payment_method,
+            'address' => $request->address,
+        ]);
+    
+        // Soustraire la quantité commandée
+        $product->update([
+            'quantity' => $product->quantity - $request->quantity
+        ]);
+    
+        return redirect()->route("products.index")->with("success", "Votre commande a été passée avec succès.");
     }
+    
 
     /**
      * Display the specified resource.
