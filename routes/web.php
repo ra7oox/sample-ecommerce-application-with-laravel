@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\UsersController;
 use App\Models\ProductList;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource("categories",CategoryController::class);
     Route::resource("orders",OrdersController::class);
+    Route::resource("subcategories",SubcategoryController::class);
+
 
     Route::get("/lastproducts",function(){
         if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "client") {

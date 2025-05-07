@@ -10,9 +10,11 @@
                 <tr>
                     <th scope="col">#ID</th>
                     <th scope="col">Name</th>
-                    @can('update-product')
+                    @if (Auth::user()->account_type=="admin" ||Auth::user()->account_type=="seller")
+                        
+                    
                     <th scope="col">Update Product</th>
-                    @endcan
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -20,7 +22,7 @@
                     <tr>
                         <td>{{ $product->id }}</td>
                         <td>{{ $product->name }}</td>
-                        @can('update-product')
+                        @can('update-product',$product)
                             
                        
                         <td class="text-center">

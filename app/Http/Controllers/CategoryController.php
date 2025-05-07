@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -10,6 +11,8 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
+
     public function index()
     {
         $categories=Category::all();
@@ -21,7 +24,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize("create-category");
+        return view("categories.create");
     }
 
     /**
@@ -29,7 +33,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize("create-category");
+
+        $request->validate([
+            "category_name"=>"required|min:4",
+        ]);
+        Category::create([
+            'category_name'=>$request->category_name,
+        ]);
+        return redirect()->route("categories.index")->with("success","categorie ajouté par success");
     }
 
     /**
@@ -45,9 +57,13 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit( $id)
     {
-        //
+        $this->authorize("update-category");
+
+        $category=Category::findOrFail($id);
+        return view("categories.edit",compact("category"));
+
     }
 
     /**
@@ -55,14 +71,38 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->authorize("update-category");
+
+        $category=Category::findOrFail($id);
+        $request->validate([
+            "category_name"=>"required|min:4",
+        ]);
+        $category->update([
+            "category_name"=>$request->category_name,
+        ]);
+        return redirect()->route("categories.index")->with("success","categorie modifié par success");
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id)
+{
+    $this->authorize("delete-category");
+
+    $category = Category::findOrFail($id);
+
+    // Supprimer tous les produits liés
+    foreach ($category->products as $product) {
+        $product->delete();
     }
+
+    // Supprimer la catégorie
+    $category->delete();
+
+    return redirect()->route("categories.index")->with("success", "Catégorie supprimée avec succès");
+}
+
 }

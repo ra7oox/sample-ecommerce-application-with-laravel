@@ -19,8 +19,13 @@
 </head>
 <body>
     @include('layouts.navigation')
-    
+    @if (Auth::user())
+    @include('layouts.sidebar')
+    @endif
+    @if (!Auth::user())
     @yield('content')
+    @endif
+    
     @include("layouts.footer")
 
     {{-- Bootstrap JS (avec Popper) --}}

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Policies\CategoryPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ProductsPolicy;
+use App\Policies\subcategoryPolicy;
 use App\Policies\UsersPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -36,7 +38,13 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("gerer-order",[OrderPolicy::class,'gerer']);
 
 
+        Gate::define("create-category",[CategoryPolicy::class,'create']);
+        Gate::define("update-category",[CategoryPolicy::class,'update']);
+        Gate::define("delete-category",[CategoryPolicy::class,'delete']);
 
+        Gate::define("create-subcategory",[subcategoryPolicy::class,'create']);
+        Gate::define("update-subcategory",[subcategoryPolicy::class,'update']);
+        Gate::define("delete-subcategory",[subcategoryPolicy::class,'delete']);
 
 
     }

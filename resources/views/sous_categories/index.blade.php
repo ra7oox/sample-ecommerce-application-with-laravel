@@ -3,8 +3,10 @@
 @section('content')
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold text-primary">Liste des catégories</h1>
-        <a href="{{ route('categories.create') }}" class="btn btn-success">Ajouter une catégorie</a>
+        <h1 class="fw-bold text-primary">Liste des sous catégories</h1>
+        @can("create-subcategory")
+        <a href="{{ route('subcategories.create') }}" class="btn btn-success">Ajouter une sous catégorie</a>
+        @endcan
     </div>
 
     {{-- Message de succès --}}
@@ -16,27 +18,29 @@
     @endif
 
     {{-- Aucune catégorie --}}
-    @if ($categories->isEmpty())
-        <div class="alert alert-info text-center">Aucune catégorie trouvée.</div>
+    @if ($subcategories->isEmpty())
+        <div class="alert alert-info text-center">Aucune sous catégorie trouvée.</div>
     @else
         <div class="row">
-            @foreach ($categories as $category)
+            @foreach ($subcategories as $subcategory)
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $category->category_name }}</h5>
-                            <p class="card-text">ID: {{ $category->id }}</p>
+                            <h5 class="card-title">{{ $subcategory->subcategory_name }}</h5>
+                            <p class="card-text">category: {{ $subcategory->category->category_name }}</p>
+                            <p class="card-text">ID: {{ $subcategory->id }}</p>
+
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 
-                                <a href="{{ route('categories.show', $category->id) }}" class="btn btn-outline-primary btn-sm">produits</a>
-                                @can('update-category')
+                                <a href="{{ route('subcategories.show', $subcategory->id) }}" class="btn btn-outline-primary btn-sm">produits</a>
+                                @can('update-subcategory')
                                     
                                 
-                                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-outline-success btn-sm">Modifier</a>
+                                <a href="{{ route('subcategories.edit', $subcategory->id) }}" class="btn btn-outline-success btn-sm">Modifier</a>
                                 @endcan
-                                @can('delete-category')
+                                @can('delete-subcategory')
                                 
-                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-inline" 
+                                <form action="{{ route('subcategories.destroy', $subcategory->id) }}" method="POST" class="d-inline" 
                                       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
                                     @csrf
                                     @method('DELETE')

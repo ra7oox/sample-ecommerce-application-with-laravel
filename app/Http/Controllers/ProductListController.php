@@ -74,7 +74,7 @@ class ProductListController extends Controller
     ]);
 
     // Détermination du vendeur
-    $seller_id = Auth::user()->account_type === 'seller' ? Auth::id() : null;
+    $seller_id = Auth::user()->account_type === 'seller' ? Auth::id() : 0;
 
     // Création du produit
     ProductList::create([
