@@ -7,6 +7,7 @@ use App\Policies\CategoryPolicy;
 use App\Policies\FavouritePolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ProductsPolicy;
+use App\Policies\ReviewsPolicy;
 use App\Policies\subcategoryPolicy;
 use App\Policies\UsersPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -53,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("create-favourites",[FavouritePolicy::class,'create']);
         Gate::define("delete-favourites",[FavouritePolicy::class,'delete']);
 
+
+        Gate::define("show-review",[ReviewsPolicy::class,"show"]);
+        Gate::define("create-review",[ReviewsPolicy::class,"create"]);
+        Gate::define("update-review",[ReviewsPolicy::class,"update"]);
+        Gate::define("delete-review",[ReviewsPolicy::class,"delete"]);
 
     }
 }

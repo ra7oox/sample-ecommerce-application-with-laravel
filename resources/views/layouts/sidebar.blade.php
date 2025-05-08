@@ -40,6 +40,14 @@
                         📦 Commandes
                     </a>
                 </li>
+
+                @can('show-review')
+                <li>
+                    <a href="{{ route('reviews.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
+                        ⭐ Avis sur mes produits
+                    </a>
+                </li>
+                @endcan
                 <li>
                     <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
                         📂 Catégories

@@ -9,10 +9,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavouriteProductController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\UsersController;
 use App\Models\FavouriteProduct;
 use App\Models\ProductList;
+use App\Models\ProductReview;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/dashboard', function () {
@@ -34,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::resource("orders",OrdersController::class);
     Route::resource("subcategories",SubcategoryController::class);
     Route::resource("favourites",FavouriteProductController::class);
+    Route::resource("reviews",ProductReviewController::class);
+
     Route::match(['get', 'post'], '/add-favourite/{product_id}', [FavouriteProductController::class, 'addFavourite'])->name('favourites.add');
 
 

@@ -100,7 +100,8 @@ class ProductListController extends Controller
     public function show($id)
     {
         $product = ProductList::findOrFail($id);
-        return view("products.show",compact("product"));
+        $reviews=$product->reviews;
+        return view("products.show",compact("product","reviews"));
 
     }
 
