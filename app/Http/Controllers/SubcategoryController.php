@@ -48,9 +48,12 @@ class SubcategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Subcategory $subcategory)
+    public function show($id)
     {
-        //
+        $subcategory=Subcategory::findOrFail($id);
+        $products=$subcategory->products()->paginate(3);
+        return view("products.index", compact("products"));
+
     }
 
     /**
@@ -100,4 +103,11 @@ class SubcategoryController extends Controller
 
 
     }
+    // ProductController.php
+public function getSubcategories($categoryId)
+{
+    $subcategories = Subcategory::where('category_id', $categoryId)->get();
+    return response()->json(['subcategories' => $subcategories]);
+}
+
 }

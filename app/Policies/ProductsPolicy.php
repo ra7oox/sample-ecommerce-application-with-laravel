@@ -13,7 +13,7 @@ class ProductsPolicy
    }
    public function update(User $user, ProductList $product)
 {
-    return $user->account_type === 'admin' || $product->user_id === $user->id;
+    return $user->account_type === 'admin' || $product->seller_id === $user->id;
 }
 
    public function delete(User $user){

@@ -9,6 +9,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">
@@ -55,6 +61,11 @@
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-success btn-sm w-100 mb-1">Commander</button>
                                 </form>
+                                @endcan
+                                @can('create-favourite')
+                                    
+                               
+                                <a href="{{ route('favourites.add',$product->id) }}" class="btn btn-warning btn-sm w-100 mb-1">Ajouter au favoris</a>
                                 @endcan
                                 @can('delete-product')
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">

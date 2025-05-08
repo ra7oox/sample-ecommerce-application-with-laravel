@@ -53,4 +53,7 @@ class User extends Authenticatable
         return $this->hasMany(Orders::class,"client_id");
         
     }
+    public function favourites(){
+        return $this->hasMany(FavouriteProduct::class);
+    }
 }

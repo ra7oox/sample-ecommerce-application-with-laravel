@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\FavouriteProduct;
 use App\Policies\CategoryPolicy;
+use App\Policies\FavouritePolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ProductsPolicy;
 use App\Policies\subcategoryPolicy;
@@ -45,6 +47,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("create-subcategory",[subcategoryPolicy::class,'create']);
         Gate::define("update-subcategory",[subcategoryPolicy::class,'update']);
         Gate::define("delete-subcategory",[subcategoryPolicy::class,'delete']);
+
+
+        Gate::define("show-favourites",[FavouritePolicy::class,'show']);
+        Gate::define("create-favourites",[FavouritePolicy::class,'create']);
+        Gate::define("delete-favourites",[FavouritePolicy::class,'delete']);
 
 
     }

@@ -2,7 +2,7 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white dark:bg-gray-800 shadow-md">
         <div class="p-6">
-            <h1 class="text-2xl font-bold text-indigo-600 dark:text-white">ShopYo</h1>
+            <h1 class="text-2xl font-bold text-indigo-600 dark:text-white">Shopily</h1>
         </div>
         <nav class="mt-6">
             <ul class="space-y-2">
@@ -25,6 +25,16 @@
                         🛍 Produits
                     </a>
                 </li>
+                @can('show-favourites')
+                    
+                
+                <li>
+                    <a href="{{ route('favourites.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
+                        ❤️ Produits favoris
+                    </a>
+                </li>
+                @endcan
+                
                 <li>
                     <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
                         📦 Commandes

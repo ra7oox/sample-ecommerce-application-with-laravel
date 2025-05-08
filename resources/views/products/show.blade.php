@@ -12,6 +12,12 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">{{ $product->name }}</h5>
+                    <p class="mb-1"><strong>Catégorie:</strong> 
+                        <a href="{{route('categories.show', $product->category->id)}}" class="btn btn-sm btn-outline-success">{{ $product->category->category_name }}</a>
+                    </p>
+                    <p class="mb-1"><strong>Sous Catégorie:</strong> 
+                        {{$product->subcategory->subcategory_name}}
+                    </p>
                     <p class="card-text"><strong>Description :</strong> {{ $product->description }}</p>
                     <p class="card-text"><strong>Quantité :</strong> {{ $product->quantity }}</p>
                     <p class="card-text"><strong>Prix :</strong> {{ number_format($product->price, 2) }} €</p>

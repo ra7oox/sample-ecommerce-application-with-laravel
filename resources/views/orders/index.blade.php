@@ -25,6 +25,7 @@
                         <th>Méthode de paiement</th>
                         <th>Adresse</th>
                         <th>Date</th>
+                        <th>total à payer</th>
                         @can('gerer-order')
 
                         <th>Actions</th>
@@ -46,6 +47,8 @@
                             <td>{{ $order->payment_method }}</td>
                             <td>{{ $order->address }}</td>
                             <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $order->product->price * $order->quantity }} dhs</td>
+
                             @can('gerer-order')
                                 
                            

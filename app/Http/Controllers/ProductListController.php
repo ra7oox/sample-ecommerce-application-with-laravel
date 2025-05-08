@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\ProductList;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -45,7 +46,8 @@ class ProductListController extends Controller
     {
         $this->authorize("create-product");
         $categories=Category::all();
-        return view("products.create",compact("categories"));
+        $subcategories=Subcategory::all();
+        return view("products.create",compact("categories","subcategories"));
     }
 
     /**
@@ -61,6 +63,8 @@ class ProductListController extends Controller
             "quantity"=>'required',
             "image"=>'required',
             "price"=>'required',
+            "category_id"=>"required",
+            "subcategory_id"=>"required",
             
         ]);
         // Validation (à adapter si besoin)
@@ -85,6 +89,7 @@ class ProductListController extends Controller
         'price' => $request->price,
         'category_id' => $request->category_id,
         'seller_id' => $seller_id,
+        'subcategory_id'=>$request->subcategory_id,
     ]);
         return redirect()->route("products.index")->with("success","product added with success");
     }
@@ -107,9 +112,11 @@ class ProductListController extends Controller
 
         $product=ProductList::findOrFail($id);
         $this->authorize("update-product",$product);
+        $subcategories=Subcategory::all();
+
 
         $categories=DB::table("categories")->get();
-        return view("products.edit",compact("product","categories"));
+        return view("products.edit",compact("product","categories","subcategories"));
     }
 
     /**
@@ -129,10 +136,12 @@ class ProductListController extends Controller
             "quantity" => 'required|integer|min:0',
             "price" => 'required|numeric|min:0',
             "category_id"=>'required',
+            "subcategory_id"=>'required',
+
             "image" => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
         ]);
     
-        $data = $request->only(['name', 'description', 'quantity', 'price','category_id']);
+        $data = $request->only(['name', 'description', 'quantity', 'price','category_id','subcategory_id']);
     
         // Si une nouvelle image est envoyée
         if ($request->hasFile('image')) {

@@ -38,12 +38,24 @@
 
         <div class="mb-3">
             <label for="category_id" class="form-label">Catégorie</label>
-            <select name="category_id" class="form-select">
+            <select name="category_id" class="form-select" id="category_id">
                 <option value="">Sélectionner une catégorie</option>
                 @foreach ($categories as $categorie)
                     <option value="{{ $categorie->id }}" {{ old('category_id', $product->category_id) == $categorie->id ? 'selected' : '' }}>
                         {{ $categorie->category_name }}
                     </option>                    
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="subcategory_id" class="form-label">Sous Catégorie</label>
+            <select name="subcategory_id" class="form-select" id="subcategory_id" required>
+                <option value="">Sélectionner une sous catégorie</option>
+                @foreach ($subcategories as $subcategory)
+                    <option value="{{ $subcategory->id }}" {{ old('subcategory_id', $product->subcategory_id) == $subcategory->id ? 'selected' : '' }}>
+                        {{ $subcategory->subcategory_name }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -69,10 +81,35 @@
 </div>
 
 <script>
+    // Fonction pour prévisualiser l'image avant l'upload
     function previewImage(event) {
         const image = document.getElementById('imagePreview');
         image.src = URL.createObjectURL(event.target.files[0]);
         image.classList.remove('d-none');
     }
+
+    // Charger les sous-catégories en fonction de la catégorie sélectionnée
+    document.getElementById('category_id').addEventListener('change', function() {
+        const categoryId = this.value;
+        const subcategorySelect = document.getElementById('subcategory_id');
+        subcategorySelect.innerHTML = '<option value="">Sélectionner une sous catégorie</option>'; // Réinitialiser les sous-catégories
+
+        if (categoryId) {
+            // Faire une requête Ajax pour récupérer les sous-catégories
+            fetch(`/subcategory/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Ajouter les sous-catégories récupérées
+                    data.subcategories.forEach(subcategory => {
+                        const option = document.createElement('option');
+                        option.value = subcategory.id;
+                        option.textContent = subcategory.subcategory_name;
+                        subcategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    });
 </script>
+
 @endsection
