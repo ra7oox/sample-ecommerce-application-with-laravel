@@ -34,7 +34,16 @@
                     </a>
                 </li>
                 @endcan
+                @can('show-cart')
+                    
                 
+                <li>
+                    <a href="{{ route('carts.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
+                    
+                    🛒  Mon Panier
+                    </a>
+                </li>
+                @endcan
                 <li>
                     <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
                         📦 Commandes

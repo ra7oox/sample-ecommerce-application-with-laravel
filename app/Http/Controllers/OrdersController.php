@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Orders;
+use App\Models\ProductCart;
 use App\Models\ProductList;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,20 +67,45 @@ class OrdersController extends Controller
         if ($request->quantity > $product->quantity) {
             return back()->with("error", "Stock insuffisant pour cette commande.");
         }
-    
-        Orders::create([
-            'product_id' => $request->product_id,
-            'client_id' => $request->client_id,
-            'quantity' => $request->quantity,
-            'status' => 'pending', // ou "en attente"
-            'payment_method' => $request->payment_method,
-            'address' => $request->address,
-        ]);
-    
-        // Soustraire la quantité commandée
+        if($request->add=="panier"){
+            $client=User::findOrFail($request->client_id);
+            $product_exist=ProductCart::where("client_id",$request->client_id)
+            ->where("product_id",$request->product_id)->first();
+            if($product_exist){
+                $product_exist->update([
+                    "quantity"=>$product_exist->quantity+$request->quantity,
+                ]);
+            }else{
+                ProductCart::create([
+                    'product_id' => $request->product_id,
+                    'client_id' => $request->client_id,
+                    'quantity' => $request->quantity,
+                    'paiment_method' => $request->payment_method,
+                    'address' => $request->address,
+                ]);
+            }
+           
+        return redirect()->route("products.index")->with("success", "produit ajouter au panier avec success");
+
+        }elseif($request->add=="commander"){
+            Orders::create([
+                'product_id' => $request->product_id,
+                'client_id' => $request->client_id,
+                'quantity' => $request->quantity,
+                'status' => 'pending', // ou "en attente"
+                'payment_method' => $request->payment_method,
+                'address' => $request->address,
+            ]);
+             // Soustraire la quantité commandée
         $product->update([
             'quantity' => $product->quantity - $request->quantity
         ]);
+        $cart=ProductCart::where("client_id",$request->client_id)
+        ->where("product_id",$request->product_id)->first();
+        $cart->delete();
+        }
+        
+       
     
         return redirect()->route("products.index")->with("success", "Votre commande a été passée avec succès.");
     }

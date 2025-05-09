@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\FavouriteProduct;
+use App\Policies\CartPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\FavouritePolicy;
 use App\Policies\OrderPolicy;
@@ -59,6 +60,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("create-review",[ReviewsPolicy::class,"create"]);
         Gate::define("update-review",[ReviewsPolicy::class,"update"]);
         Gate::define("delete-review",[ReviewsPolicy::class,"delete"]);
+
+        Gate::define("show-cart",[CartPolicy::class,"show"]);
+        Gate::define("create-cart",[CartPolicy::class,"create"]);
+        Gate::define("delete-cart",[CartPolicy::class,"delete"]);
 
     }
 }

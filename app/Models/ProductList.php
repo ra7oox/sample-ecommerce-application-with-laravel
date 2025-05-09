@@ -28,4 +28,8 @@ class ProductList extends Model
         return $this->hasMany(ProductReview::class,"product_id");
 
     }
+    public function carts(){
+        return $this->hasMany(ProductCart::class,"product_id");
+
+    }
 }
