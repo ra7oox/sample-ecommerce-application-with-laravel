@@ -1,66 +1,93 @@
 @extends('master')
 
 @section('content')
-    <div class="container my-4">
-        <h1>Category: {{ $category->category_name }}</h1>
-        <a href="{{ route('categories.index') }}" class="btn btn-primary mb-3">Go Back</a>
+<div class="container mt-5">
 
-        <table class="table table-hover table-bordered align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">#ID</th>
-                    <th scope="col">Name</th>
-                    @if (Auth::user()->account_type=="admin" ||Auth::user()->account_type=="seller")
-                        
-                    
-                    <th scope="col">Update Product</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($products as $product)
-                    <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->name }}</td>
-                        @can('update-product',$product)
-                            
-                       
-                        <td class="text-center">
-                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Update</a>
-                        </td>
-                        @endcan
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="text-center">Aucun produit.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+            @if(Auth::user()->account_type== "seller" )
+            Liste de mes produits sur la categorie  <strong> {{$category->category_name}}</strong>
+            @else
+            Liste des produits de la categorie <strong> {{$category->category_name}}</strong>
+            @endif
+        </h4>
+        @can('create-product')
+        <a href="{{ route('products.create') }}" class="btn btn-success">Ajouter un produit</a>
+        @endcan
     </div>
 
-    <style>
-        /* Personnalisation des boutons "Update" */
-.btn-warning {
-    background-color: #f39c12; /* Couleur orange */
-    border-color: #e67e22;
-}
+    <form class="d-flex mb-4" role="search" action="{{ route('products.search') }}" method="POST">
+        @csrf
+        <input class="form-control me-2" type="search" name="search" placeholder="Rechercher" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Rechercher</button>
+    </form>
 
-.btn-warning:hover {
-    background-color: #e67e22;
-    border-color: #d35400;
-}
+    @if ($products->isEmpty())
+        <div class="alert alert-info">Aucun produit disponible.</div>
+    @else
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach ($products as $product)
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <a href="{{ route('products.show', $product->id) }}" >
+                            <img src="{{ asset('storage/'.$product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text">{{ Str::limit($product->description, 80) }}</p>
+                            <p class="mb-1"><strong>Catégorie:</strong> 
+                                <a href="{{route('categories.show', $product->category->id)}}" class="btn btn-sm btn-outline-success">{{ $product->category->category_name }}</a>
+                            </p>
+                            <p class="mb-1"><strong>Quantité:</strong> {{ $product->quantity }}</p>
+                            <p class="mb-3"><strong>Prix:</strong> {{ number_format($product->price, 2) }} €</p>
 
-/* Personnalisation des en-têtes du tableau */
-.table-dark th {
-    background-color: #34495e;
-    color: white;
-}
+                            <div class="mt-auto">
+                                
+                                @can('update-product', $product)
+                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm w-100 mb-1">Modifier</a>
+                                @endcan
+                                @can('create-order')
+                                <form action="{{ route('orders.create') }}" method="GET">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <button type="submit" class="btn btn-success btn-sm w-100 mb-1">Commander</button>
+                                </form>
+                                @endcan
+                                @can('create-favourite')
+                                    
+                               
+                                <a href="{{ route('favourites.add',$product->id) }}" class="btn btn-warning btn-sm w-100 mb-1">Ajouter au favoris</a>
+                                @endcan
+                                @can('delete-product')
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">Supprimer</button>
+                                </form>
+                                @endcan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
-/* Personnalisation des lignes du tableau */
-.table-hover tbody tr:hover {
-    background-color: #ecf0f1;
-}
-
-    </style>
+        <div class="d-flex justify-content-center mt-4">
+            {{ $products->links('pagination::bootstrap-5') }}
+        </div>
+    @endif
+</div>
 @endsection

@@ -50,7 +50,7 @@ class CategoryController extends Controller
     public function show( $id)
     {
         $category=Category::findOrFail($id);
-        $products=$category->products;
+        $products=$category->products()->paginate(3);
         return view("categories.show",compact("category","products"));
     }
 
@@ -76,10 +76,16 @@ class CategoryController extends Controller
         $category=Category::findOrFail($id);
         $request->validate([
             "category_name"=>"required|min:4",
+            
         ]);
-        $category->update([
-            "category_name"=>$request->category_name,
-        ]);
+        $data = $request->only(["category_name"]);
+    
+        // Si une nouvelle image est envoyée
+        if ($request->hasFile('category_image')) {
+            $data['category_image'] = $request->file('category_image')->store('category_images', 'public');
+        }
+        $category->update($data);
+        
         return redirect()->route("categories.index")->with("success","categorie modifié par success");
 
 

@@ -27,7 +27,7 @@ class ProductListController extends Controller
             } elseif ($user->account_type == "seller") {
                 $products = $user->products()->paginate(3); // Produits du client
             } else {
-                $products = ProductList::paginate(2);
+                $products = ProductList::paginate(3);
             }
         } else {
             // Utilisateur non connecté → on affiche tous les produits
@@ -171,7 +171,7 @@ class ProductListController extends Controller
         $request->validate([
             "search"=>"required|min:2",
         ]);
-        $products = ProductList::where('name', 'like', '%' . $request->search . '%')->paginate(2);
+        $products = ProductList::where('name', 'like', '%' . $request->search . '%')->paginate(3);
         return view("products.index",compact("products"));
 
     }

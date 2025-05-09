@@ -40,7 +40,9 @@
             @foreach ($products as $product)
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('storage/'.$product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                        <a href="{{ route('products.show', $product->id) }}" >
+                            <img src="{{ asset('storage/'.$product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                        </a>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ Str::limit($product->description, 80) }}</p>
@@ -51,7 +53,7 @@
                             <p class="mb-3"><strong>Prix:</strong> {{ number_format($product->price, 2) }} €</p>
 
                             <div class="mt-auto">
-                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary btn-sm w-100 mb-1">Détail</a>
+                                
                                 @can('update-product', $product)
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm w-100 mb-1">Modifier</a>
                                 @endcan
