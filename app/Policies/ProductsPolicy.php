@@ -16,8 +16,8 @@ class ProductsPolicy
     return $user->account_type === 'admin' || $product->seller_id === $user->id;
 }
 
-   public function delete(User $user){
-    return $user->account_type=="admin";
+   public function delete(User $user,ProductList $product){
+    return $user->account_type=="admin" || $product->seller_id === $user->id;
 
    }
 }

@@ -58,10 +58,23 @@
             <input type="file" class="form-control" id="image" name="image" onchange="previewImage(event)" value="{{ old('image') }}">
             <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
         </div>
-
+        <div class="mb-3">
+            <label for="image2" class="form-label">Image 2</label>
+            <input type="file" class="form-control" id="image2" name="image2" onchange="previewImage(event)" value="{{ old('image2') }}">
+            <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
+        </div>
+        <div class="mb-3">
+            <label for="image3" class="form-label">Image 3</label>
+            <input type="file" class="form-control" id="image3" name="image3" onchange="previewImage(event)" value="{{ old('image3') }}">
+            <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
+        </div>
         <div class="mb-3">
             <label for="price" class="form-label">Prix</label>
             <input type="text" class="form-control" id="price" name="price" placeholder="Prix du produit" value="{{ old('price') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="special_price" class="form-label">Special Prix</label>
+            <input type="text" class="form-control" id="special_price" name="special_price" placeholder="special Prix du produit" value="{{ old('special_price') }}" >
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Ajouter</button>

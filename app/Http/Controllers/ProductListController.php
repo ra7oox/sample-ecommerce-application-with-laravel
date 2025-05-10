@@ -23,18 +23,18 @@ class ProductListController extends Controller
             $user = Auth::user();
     
             if ($user->account_type == "admin") {
-                $products = ProductList::paginate(3);
+                $products = ProductList::paginate(25);
             } elseif ($user->account_type == "seller") {
-                $products = $user->products()->paginate(3); // Produits du client
+                $products = $user->products()->paginate(25); // Produits du client
             } else {
-                $products = ProductList::paginate(3);
+                $products = ProductList::paginate(25);
             }
         } else {
             // Utilisateur non connecté → on affiche tous les produits
-            $products = ProductList::paginate(3);
+            $products = ProductList::paginate(25);
         }
-    
-        return view("products.index", compact("products"));
+        $categories=Category::all();
+        return view("products.index", compact("products","categories"));
     }
     
     
@@ -65,6 +65,9 @@ class ProductListController extends Controller
             "price"=>'required',
             "category_id"=>"required",
             "subcategory_id"=>"required",
+            "image2"=>"required",
+            "image3"=>"required",
+            
             
         ]);
         // Validation (à adapter si besoin)
@@ -86,10 +89,14 @@ class ProductListController extends Controller
         'description' => $request->description,
         'quantity' => $request->quantity,
         'image' => $request->file('image')->store('product_images', 'public'),
+        'image2' => $request->file('image2')->store('product_images', 'public'),
+        'image3' => $request->file('image3')->store('product_images', 'public'),
+
         'price' => $request->price,
         'category_id' => $request->category_id,
         'seller_id' => $seller_id,
         'subcategory_id'=>$request->subcategory_id,
+        'special_price'=>$request->special_price,
     ]);
         return redirect()->route("products.index")->with("success","product added with success");
     }
@@ -140,6 +147,8 @@ class ProductListController extends Controller
             "subcategory_id"=>'required',
 
             "image" => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
+            "image2" => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
+            "image3" => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
         ]);
     
         $data = $request->only(['name', 'description', 'quantity', 'price','category_id','subcategory_id']);
@@ -147,6 +156,11 @@ class ProductListController extends Controller
         // Si une nouvelle image est envoyée
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('product_images', 'public');
+        }
+        if ($request->hasFile('image2')) {
+            $data['image2'] = $request->file('image2')->store('product_images', 'public');
+        }if ($request->hasFile('image3')) {
+            $data['image3'] = $request->file('image3')->store('product_images', 'public');
         }
         $product->update($data);
     
@@ -159,9 +173,10 @@ class ProductListController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize("delete-product");
+        
         
         $product = ProductList::findOrFail($id);
+        $this->authorize("delete-product",$product);
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produit supprimé avec succès.');
 
@@ -171,8 +186,41 @@ class ProductListController extends Controller
         $request->validate([
             "search"=>"required|min:2",
         ]);
+        $categories=Category::all();
         $products = ProductList::where('name', 'like', '%' . $request->search . '%')->paginate(3);
-        return view("products.index",compact("products"));
+        return view("products.index",compact("products","categories"));
 
     }
+    public function filter(Request $request)
+{
+    $query = ProductList::query();
+
+    if ($request->filled('name')) {
+        $query->where(function($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->name . '%')
+              ->orWhere('description', 'like', '%' . $request->name . '%');
+        });
+    }
+
+    if ($request->filled('category_id')) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    if ($request->filled('min_prix')) {
+        $query->where('price', '>=', $request->min_prix);
+    }
+
+    if ($request->filled('max_prix')) {
+        $query->where('price', '<=', $request->max_prix);
+    }
+
+    $products = $query->paginate(12);
+    $categories = Category::all();
+
+    return view('products.index', [
+        'products' => $products,
+        'categories' => $categories
+    ]);
+}
+
 }

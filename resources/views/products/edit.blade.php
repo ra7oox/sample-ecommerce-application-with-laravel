@@ -74,7 +74,23 @@
                 <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
             @endif
         </div>
-
+        <div class="mb-3">
+            <label for="image2" class="form-label">Image 2</label>
+            <input type="file" class="form-control" id="image2" name="image2" onchange="previewImage(event)">
+            @if($product->image2)
+                <img id="imagePreview" src="{{ asset('storage/' . $product->image2) }}" alt="Image actuelle" class="img-thumbnail mt-3" style="max-height: 200px;">
+            @else
+                <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
+            @endif
+        </div> <div class="mb-3">
+            <label for="image3" class="form-label">Image 3</label>
+            <input type="file" class="form-control" id="image3" name="image3" onchange="previewImage(event)">
+            @if($product->image3)
+                <img id="imagePreview" src="{{ asset('storage/' . $product->image3) }}" alt="Image actuelle" class="img-thumbnail mt-3" style="max-height: 200px;">
+            @else
+                <img id="imagePreview" src="#" alt="Prévisualisation" class="img-fluid mt-3 d-none" style="max-height: 200px;">
+            @endif
+        </div>
         <button type="submit" class="btn btn-primary">Mettre à jour</button>
         <a href="{{ route('products.index') }}" class="btn btn-secondary ms-2">Annuler</a>
     </form>

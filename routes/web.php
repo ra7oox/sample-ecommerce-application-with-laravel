@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::resource("reviews",ProductReviewController::class);
     Route::resource("carts",ProductCartController::class);
 
+    Route::match(['get', 'post'], '/filter', [ProductListController::class, 'filter'])->name('products.filter');
 
     Route::match(['get', 'post'], '/add-favourite/{product_id}', [FavouriteProductController::class, 'addFavourite'])->name('favourites.add');
 
