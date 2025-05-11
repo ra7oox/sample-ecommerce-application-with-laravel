@@ -64,4 +64,8 @@ class User extends Authenticatable
         return $this->hasMany(ProductCart::class,"client_id");
 
     }
+    public function contacts(){
+        return $this->hasMany(Contact::class,"user_id");
+
+    }
 }

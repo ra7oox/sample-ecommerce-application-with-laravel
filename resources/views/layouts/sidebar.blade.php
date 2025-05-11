@@ -79,6 +79,24 @@
                     </li>
                 @endif
                 @endif
+
+
+                @can('create-contact')
+                <li>
+                    <a href="{{ route('contact.create') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
+                        ✉️ Contacter l'admin
+                    </a>
+                </li>
+                @endcan
+                
+                @can('show-contact')
+                <li>
+                    <a href="{{ route('contact.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-700 rounded">
+                        📥 Messages reçus
+                    </a>
+                </li>
+                @endcan
+                
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

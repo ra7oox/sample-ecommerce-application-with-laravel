@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavouriteProductController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductCartController;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::resource("favourites",FavouriteProductController::class);
     Route::resource("reviews",ProductReviewController::class);
     Route::resource("carts",ProductCartController::class);
+    Route::resource("contact",ContactController::class);
+    Route::post("/contact-reply",[ContactController::class,"reply"])->name("contact.reply");
+
 
     Route::match(['get', 'post'], '/filter', [ProductListController::class, 'filter'])->name('products.filter');
 

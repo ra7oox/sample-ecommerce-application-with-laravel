@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\FavouriteProduct;
 use App\Policies\CartPolicy;
 use App\Policies\CategoryPolicy;
+use App\Policies\ContactPolicy;
 use App\Policies\FavouritePolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ProductsPolicy;
@@ -64,6 +65,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define("show-cart",[CartPolicy::class,"show"]);
         Gate::define("create-cart",[CartPolicy::class,"create"]);
         Gate::define("delete-cart",[CartPolicy::class,"delete"]);
+
+        Gate::define("show-contact",[ContactPolicy::class,"show"]);
+        Gate::define("create-contact",[ContactPolicy::class,"create"]);
+        Gate::define("reply-contact",[ContactPolicy::class,"reply"]);
 
     }
 }
